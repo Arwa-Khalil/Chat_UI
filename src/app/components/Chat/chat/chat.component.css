@@ -1,0 +1,102 @@
+/* ChatComponent styles
+   - Only .messages scrolls (flex layout)
+   - Composer is fixed at the bottom of the card and visible at all times
+   - Ensure min-height:0 on parents so nested scroll works on all screen sizes
+*/
+:host { display:block; height:100%; min-height:0; box-sizing:border-box; }
+
+.chat-root {
+  display:flex;
+  flex-direction:column;
+  height:100%;
+  gap:12px;
+  padding:16px; /* keep some breathing room inside card */
+  min-height:0;   /* allow .messages to shrink/scroll */
+  flex: 1 1 auto;
+  box-sizing:border-box;
+}
+
+/* Messages is the only scrollable area */
+.messages {
+  flex: 1 1 auto;
+  min-height: 0;     /* critical for nested flex scrolling */
+  overflow: auto;
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  padding:12px;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  background: transparent;
+}
+
+/* message items */
+.msg { display:flex; gap:12px; align-items:flex-start; max-width:100%; }
+.msg.user { margin-left:auto; flex-direction:row-reverse; }
+.avatar { width:46px; height:46px; border-radius:12px; display:grid; place-items:center; font-weight:800; color:#061026; background:linear-gradient(135deg,#ffd7a8,#ffb3a8); box-shadow:0 10px 30px rgba(2,8,23,0.28); }
+.msg.assistant .avatar { background:linear-gradient(135deg,#8ad8ff88,#6d9cff33); color:#041031; }
+
+.bubble {
+  padding: 12px 16px;
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.03);
+  color: #eaf6ff;
+  box-shadow: 0 14px 36px rgba(2,9,23,0.45);
+  max-width: 70ch;
+  word-break: break-word;
+}
+.msg.user .bubble { background: linear-gradient(180deg,#081226 0%, #04121a 100%); color:#cfefff; }
+
+/* ensure code blocks and tables inside messages scroll horizontally if very wide */
+.content pre.code-block { max-width:100%; overflow:auto; -webkit-overflow-scrolling: touch; }
+
+/* Composer pinned at bottom of content-card:
+   - Use sticky within content-card so composer remains visible while messages scroll
+   - composer must be outside the .messages scroll area (it is a sibling)
+*/
+.composer {
+  position: sticky;
+  bottom: 0;
+  z-index: 6;
+  flex: 0 0 auto;
+  display:flex;
+  gap:10px;
+  align-items:center;
+  padding:12px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  border-top: 1px solid rgba(255,255,255,0.03);
+  background: linear-gradient(180deg, rgba(4,8,12,0.6), rgba(4,8,12,0.45));
+  backdrop-filter: blur(6px) saturate(120%);
+  box-shadow: 0 -6px 20px rgba(2,9,23,0.35);
+}
+
+/* input and button */
+.composer input[type="text"] {
+  flex:1;
+  padding:12px 14px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,0.03);
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+  color:#eaf6ff;
+  outline:none;
+  font-size:14px;
+}
+.send {
+  background: linear-gradient(135deg,#4cc6ff,#6ef0c5);
+  border:none;
+  color:#021026;
+  padding:10px 14px;
+  border-radius:10px;
+  cursor:pointer;
+  box-shadow: 0 12px 34px rgba(76,198,255,0.12);
+}
+
+/* responsive adjustments */
+@media (max-width:900px) {
+  .chat-root { padding:10px; gap:10px; }
+  .messages { padding:8px; gap:10px; }
+  .avatar { width:40px; height:40px; }
+  .composer { padding:10px; }
+}

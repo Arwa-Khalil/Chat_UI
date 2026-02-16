@@ -1,0 +1,24 @@
+<!-- ChatComponent template: messages list with scroll + composer -->
+<div class="chat-root">
+  <div #messagesContainer class="messages" role="log" aria-live="polite">
+    <div *ngFor="let m of messages" class="msg" [ngClass]="m.role">
+      <div class="avatar">{{ m.role === 'user' ? 'U' : 'A' }}</div>
+      <div class="bubble" [@slideFade]>
+        <div *ngIf="m.role === 'assistant'" class="content" [innerHTML]="m.safe"></div>
+        <div *ngIf="m.role === 'user'" class="content user-txt">{{ m.text }}</div>
+      </div>
+    </div>
+
+    <div class="loading" *ngIf="loading">
+      <div class="typing">
+        <span></span><span></span><span></span>
+      </div>
+      <div class="typing-text">Assistant is typing</div>
+    </div>
+  </div>
+
+  <form class="composer" (ngSubmit)="sendQuestion()">
+    <input type="text" name="q" [(ngModel)]="question" placeholder="Type a question and press Enter" autocomplete="off">
+    <button class="send" type="submit">Send</button>
+  </form>
+</div>

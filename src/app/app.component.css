@@ -1,0 +1,111 @@
+/* AppComponent styles
+   - App shell, topbar and layout
+   - Ensure right panel/card participates in flex layout and allows nested scroll
+   - Restore attractive nav bar visuals removed earlier
+*/
+:host { display:block; height:100%; margin:0; padding:0; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial; }
+
+/* full app shell */
+.shell {
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  background: radial-gradient(1200px 600px at 10% 10%, #071428 0%, #021124 40%, #06172a 100%);
+  color: #eaf6ff;
+}
+
+/* Topbar / nav */
+.topbar {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:14px 20px;
+  gap:12px;
+  z-index:10;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  backdrop-filter: blur(6px) saturate(120%);
+}
+.brand { display:flex; align-items:center; gap:12px; }
+.logo {
+  width:48px; height:48px; border-radius:12px; display:grid; place-items:center;
+  font-weight:800; color:#041026;
+  background: linear-gradient(135deg,#6ef0c5,#4cc6ff);
+  box-shadow: 0 10px 30px rgba(76,198,255,0.12);
+}
+.brand-text .name { font-weight:700; font-size:16px; }
+.brand-text .subtitle { font-size:12px; color:rgba(230,238,248,0.6) }
+
+/* Controls on the right of topbar */
+.controls { display:flex; align-items:center; gap:10px; }
+.tab {
+  background:transparent;
+  border:1px solid rgba(255,255,255,0.04);
+  color:#dff8ff;
+  padding:8px 12px;
+  border-radius:10px;
+  cursor:pointer;
+  transition:all .18s;
+}
+.tab.active {
+  background: linear-gradient(135deg,#4cc6ff,#6ef0c5);
+  color:#021026;
+  transform:translateY(-2px);
+  box-shadow:0 10px 30px rgba(76,198,255,0.12);
+}
+.ghost { color:rgba(230,238,248,0.65); text-decoration:none; padding:8px 12px; border-radius:8px; }
+
+/* main area layout */
+.main-area {
+  display:flex;
+  flex:1 1 auto;
+  gap:18px;
+  padding:18px;
+  align-items:stretch;
+  min-height: 0; /* critical so nested flex children can scroll */
+}
+
+/* Left panel */
+.panel.left {
+  width:300px;
+  display:flex;
+  flex-direction:column;
+  flex: 0 0 300px;
+  min-width:220px;
+}
+@media (max-width:900px) {
+  .panel.left {
+    width:100%;
+    flex:0 0 auto;
+    order:-1; /* move above content */
+  }
+  .main-area { flex-direction:column; padding:12px; gap:12px; }
+}
+
+/* Right panel + content card - ensure card is a flex container and allows inner scrolling */
+.panel.right { flex:1 1 auto; display:flex; flex-direction:column; min-height:0; }
+.content-card {
+  flex:1 1 auto;
+  display:flex;
+  flex-direction:column;
+  min-height:0; /* allows child .chat-root to scroll */
+  border-radius:14px;
+  padding:0; /* inner components handle padding so composer can be sticky */
+  border:1px solid rgba(255,255,255,0.03);
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  box-shadow: 0 14px 50px rgba(2,9,23,0.6);
+  overflow: visible; /* allow sticky composer to render correctly */
+}
+
+/* small card header area (if used within content) */
+.content-card > .card-header {
+  padding:14px;
+  border-bottom:1px solid rgba(255,255,255,0.02);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+/* footer */
+.footer { padding:10px 18px; font-size:12px; color:rgba(230,238,248,0.6); text-align:center; }

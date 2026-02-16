@@ -1,0 +1,30 @@
+<div class="upload-root">
+  <div class="upload-drop" [class.dragging]="isDragging"
+       (dragover)="onDragOver($event)" (drop)="onDrop($event)" tabindex="0">
+    <input class="file-input" type="file" (change)="onFileSelected($event)" multiple>
+    <div class="upload-inner">
+      <div class="icon">📁</div>
+      <div class="title">Drag & drop files or click to upload</div>
+      <div class="subtitle">Supported: pdf, txt, md, docx</div>
+    </div>
+  </div>
+
+  <ul class="uploads">
+    <li *ngFor="let f of uploadedFiles" class="upload-item" [class.done]="f.status==='done'" [class.err]="f.status==='error'">
+      <div class="meta">
+        <div class="name">{{f.name}}</div>
+        <div class="status">{{f.status}}</div>
+      </div>
+
+      <div class="progress-wrap" *ngIf="f.status !== 'done'">
+        <div class="bar">
+          <div class="fill" [style.width.%]="f.progress"></div>
+        </div>
+        <div class="percent">{{f.progress}}%</div>
+      </div>
+
+      <div class="done" *ngIf="f.status === 'done'">✔ uploaded</div>
+      <div class="err" *ngIf="f.status === 'error'">⚠ failed</div>
+    </li>
+  </ul>
+</div>
